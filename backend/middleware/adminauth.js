@@ -1,6 +1,7 @@
 import cookieParser from "cookie-parser";
 import jwt from "jsonwebtoken";
 import AsyncHandler from "express-async-handler";
+import Admin from "../model/admin/admin.js";
 
 const AdminAuth = AsyncHandler(async (req ,res , next) => {
     const token = req.cookies.token
@@ -9,12 +10,17 @@ const AdminAuth = AsyncHandler(async (req ,res , next) => {
         return res.status(401).json({ message: "Unauthorized" });
     }
 
-    try {
+    try {   
         const decoded = jwt.verify(token, process.env.JWT_SECRET)
-        console.log(decoded)
 
         if(decoded.exp < Date.now() / 1000) {
             return  res.status(401).json({ message: "Token expired" });
+        }
+
+        const admin = await Admin.findById(decoded.id).select("_id").lean()
+
+        if(!admin){
+            res.status(401).json({message : "Unauthorized"})
         }
 
         next()

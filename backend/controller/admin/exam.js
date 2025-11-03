@@ -36,7 +36,7 @@ export const CreateExam = asyncHandler(async (req, res) => {
         message: "Exam created successfully",
     });
 
-});
+})
 
 export const DeleteExam = asyncHandler(async (req, res) => {
     const { ExamId, AdminId } = req.body;
@@ -111,7 +111,7 @@ export const GetAllExams = asyncHandler(async (req, res) => {
         count: exams.length,
         exams,
     });
-});
+})
 
 export const UpdateExam = asyncHandler(async (req, res) => {
   const { ExamId, AdminId, updateData } = req.body;
@@ -141,4 +141,4 @@ export const UpdateExam = asyncHandler(async (req, res) => {
   }
 
   res.status(200).json({ message: "Exam updated successfully" });
-});
+})
