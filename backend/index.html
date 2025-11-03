@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>API Load Test Tool</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #0f172a;
+      color: white;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+    }
+
+    .container {
+      background: #1e293b;
+      padding: 30px;
+      border-radius: 10px;
+      width: 350px;
+      text-align: center;
+      box-shadow: 0 0 20px rgba(255,255,255,0.1);
+    }
+
+    input[type="range"] {
+      width: 100%;
+    }
+
+    button {
+      background: #10b981;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 8px;
+      font-size: 16px;
+      cursor: pointer;
+      margin-top: 15px;
+      transition: background 0.3s;
+    }
+
+    button:hover {
+      background: #059669;
+    }
+
+    #output {
+      margin-top: 15px;
+      text-align: left;
+      font-size: 14px;
+      max-height: 250px;
+      overflow-y: auto;
+      background: #0f172a;
+      padding: 10px;
+      border-radius: 8px;
+    }
+
+    h1 {
+      color: #38bdf8;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>API Request Tester</h1>
+    <label for="reqRange">Number of Requests: <span id="reqCount">10</span></label>
+    <input type="range" id="reqRange" min="1" max="1000" value="10" />
+    <button id="startBtn">Start Test</button>
+    <div id="output"></div>
+  </div>
+
+  <script>
+    const reqRange = document.getElementById("reqRange");
+    const reqCount = document.getElementById("reqCount");
+    const output = document.getElementById("output");
+    const startBtn = document.getElementById("startBtn");
+
+    reqRange.addEventListener("input", () => {
+      reqCount.textContent = reqRange.value;
+    });
+
+    const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5MDM4YjUxOTJhMmNlYjEwNjNlNmMyYiIsImlhdCI6MTc2MTg0MDEyOSwiZXhwIjoxNzYxOTI2NTI5fQ.oz3wa6dXRl6OtXYdaw1SbnwWayaEFPYoxuJuHRysdxQ";
+
+    const data = {
+      ExamName: "Mid Term Mathematics Exam",
+      ExamCode: "MATH2025A",
+      Class: "10th B",
+      AdminId: "6904aac1ad2f964337313396",
+      Questions: [
+        {
+          Name: "What is 12 × 8?",
+          Option1: "80",
+          Option2: "96",
+          Option3: "88",
+          Option4: "108",
+          Answer: "96"
+        },
+        {
+          Name: "The square root of 144 is?",
+          Option1: "10",
+          Option2: "12",
+          Option3: "14",
+          Option4: "16",
+          Answer: "12"
+        },
+        {
+          Name: "If x = 5, what is 2x + 3?",
+          Option1: "8",
+          Option2: "10",
+          Option3: "13",
+          Option4: "15",
+          Answer: "13"
+        }
+      ]
+    };
+
+    async function sendRequest(i) {
+      try {
+        const res = await fetch("http://localhost:3000/api/admin/getall-exams/69059af4907519ba4b9e00eb?page=1&limit=10", {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            "Cookie": `token=${token}`,
+          },
+          // body: JSON.stringify(data),
+        });
+
+        const text = await res.text();
+        output.innerHTML += `<div>✅ Request ${i} - Status: ${res.status}</div>`;
+      } catch (err) {
+        output.innerHTML += `<div>❌ Request ${i} - Error: ${err.message}</div>`;
+      }
+    }
+
+    startBtn.addEventListener("click", async () => {
+      output.innerHTML = `<div>🚀 Sending ${reqRange.value} requests...</div>`;
+      for (let i = 1; i <= reqRange.value; i++) {
+        sendRequest(i);
+      }
+    });
+  </script>
+</body>
+</html>
