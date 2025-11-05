@@ -117,7 +117,7 @@
 
     async function sendRequest(i) {
       try {
-        const res = await fetch("https://collage-exam.onrender.com/api/admin/getall-exams/69059af4907519ba4b9e00eb?page=1&limit=10", {
+        const res = await fetch("http://localhost:3000/api/user/get-exam/MATH2025D", {
           method: "GET",
           headers: {
             "Content-Type": "application/json",

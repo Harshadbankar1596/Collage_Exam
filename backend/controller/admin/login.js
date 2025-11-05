@@ -11,8 +11,8 @@ export const CreateAdmin = asyncHandler(async (req, res) => {
     const { Name, Email, Phone, Password, Role, CollegeName } = req.body;
 
     if (!Name || !Email || !Phone || !Password || !Role || !CollegeName) {
-        res.status(400).json({ message: "All fields are mandatory" });
-        return;
+       return res.status(400).json({ message: "All fields are mandatory" });
+        
     }
 
     if (!validator.isEmail(Email)) {
@@ -61,23 +61,18 @@ export const LoginAdmin = asyncHandler(async (req, res) => {
 
     const admin = await Admin.findOne({ Email })
     if (!admin) {
-        res.status(400).json({ message: "Invalid Credentials" })
+       return res.status(400).json({ message: "Invalid Credentials" })
     }
     const isPasswordMatch = await bcrypt.compare(Password, admin.Password)
 
     if (!isPasswordMatch) {
-        res.status(400).json({message : "Invalid Password"})
+       return res.status(400).json({message : "Invalid Password"})
     }
 
     const token = jwt.sign({ id: admin._id }, process.env.JWT_SECRET, { expiresIn: "1d" })
     res.cookie("token", token, { httpOnly: true, secure: true, sameSite: 'None', maxAge: 24 * 60 * 60 * 1000 });
 
-    res.cookie("token", token, {
-        httpOnly: true,
-        secure: process.env.NODE_ENV === "production",
-        sameSite: "strict",
-        maxAge: 24 * 60 * 60 * 1000
-    })
+    
 
     const Temp_Admin = {
         Name: admin.Name,

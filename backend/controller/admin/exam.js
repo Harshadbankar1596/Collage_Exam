@@ -2,12 +2,14 @@ import asyncHandler from "express-async-handler";
 import Exam from "../../model/exam/exam.js";
 import Admin from "../../model/admin/admin.js";
 import mongoose from "mongoose";
+import SubmitExam from "../../model/exam/submitexam.js";
 
 export const CreateExam = asyncHandler(async (req, res) => {
+    console.log(req.body)
 
-    const { ExamName, ExamCode, Class, AdminId, Questions, Duration } = req.body;
+    const { ExamName, ExamCode, Class, AdminId, Questions, Duration , MarkPerQuestion } = req.body;
 
-    if (!ExamName || !ExamCode || !Class || !AdminId || !Questions) {
+    if (!ExamName || !ExamCode || !Class || !AdminId || !Questions || !MarkPerQuestion) {
         res.status(400);
         throw new Error("All fields are mandatory");
     }
@@ -22,7 +24,8 @@ export const CreateExam = asyncHandler(async (req, res) => {
         ExamName,
         ExamCode,
         Class,
-        AdminId,
+        Admin : AdminId,
+        MarkPerQuestion,
         Questions,
         Duration
     });
@@ -141,4 +144,18 @@ export const UpdateExam = asyncHandler(async (req, res) => {
   }
 
   res.status(200).json({ message: "Exam updated successfully" });
+})
+
+export const GetSubmitedExam = asyncHandler(async(req , res)=>{
+
+    const {ExamId} = req.params
+
+    if(!ExamId) return res.status(400).json({message : "ExamId Required"});
+
+    const Exam = await SubmitExam.findOne({Exam : ExamId}).lean().populate("Exam")
+
+    if(!Exam) return res.status(404).json({message : "Exam Not Found"});
+
+    res.status(200).json({Exam : Exam})
+
 })

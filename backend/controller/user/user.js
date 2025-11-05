@@ -1,0 +1,59 @@
+import Admin from "../../model/admin/admin.js"
+import Exam from "../../model/exam/exam.js"
+import asyncHandler from "express-async-handler"
+import User from "../../model/user/user.js"
+import SubmitExam from "../../model/exam/submitexam.js"
+
+export const GetExam = asyncHandler(async (req, res) => {
+    const { examId } = req.params
+
+    if (!examId) return res.status(400).json({ message: "examId is required" })
+
+    const exam = await Exam.findOne({ ExamCode: examId }).populate("Admin", "Name Email Role CollegeName")
+
+    if (!exam) {
+        return res.status(404).json({ message: "Exam not found" })
+    }
+
+    const Questions = exam.Questions.map((q) => {
+        return { Name: q.Name, Options: q.Options, _id: q._id }
+    })
+
+    res.json({
+        ExamName: exam.ExamName,
+        ExamCode: exam.ExamCode,
+        Class: exam.Class,
+        Duration: exam.Duration,
+        Admin: exam.Admin,
+        Questions: Questions
+    })
+})
+
+export const SubmitExams = asyncHandler(async (req, res) => {
+    const { ExamId, UserId, Answers } = req.body
+
+    if (!ExamId || !UserId || !Answers) {
+        return res.status(400).json({ message: "All Fealds Are Required" })
+    }
+
+    const existexam = await Exam.findById(ExamId).lean()
+
+    if (!existexam) return res.status(404).json({ message: "Exam Not Found" });
+
+    const existuser = await User.findById(UserId).lean()
+
+    if (!existuser) return res.status(404).json({ message: "User Not Found" });
+
+    const submiteduser = await SubmitExam.findOne({ UserId: UserId })
+
+    if(submiteduser) return res.status(404).json({message : "User Already Submitted Exam"})
+
+    const newexam = await SubmitExam.create({
+        UserId,
+        Exam : ExamId,
+        Answers,
+    })
+
+    res.status(201).json({ message: "Exam Submmited Succsess Full" })
+
+})

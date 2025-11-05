@@ -2,13 +2,14 @@ import dotenv from "dotenv"
 dotenv.config()
 import express from "express"
 import ConnectDB from "./DB/db.js"
-import Admin from "./router/admin/admin.js"
 import cookieParser from "cookie-parser"
 import cors from "cors"
 import helmet from "helmet"
 import ratelimit from "express-rate-limit"
 import hpp from "hpp";
 
+import Admin from "./router/admin/admin.js"
+import User from "./router/user/user.js"
 
 const app = express()
 const PORT = process.env.PORT || 2000
@@ -19,7 +20,7 @@ const limiter = ratelimit({
     max: 100, // limit each IP to 100 requests per windowMs
     message: "Too many requests from this IP, please try again after 15 minutes"
 })
-app.use(limiter)
+// app.use(limiter)
 
 
 app.use(express.json());
@@ -35,6 +36,7 @@ app.use(hpp());
 
 
 app.use("/api/admin", Admin)
+app.use("/api/user", User)
 
 ConnectDB().then(() => {
     app.listen(PORT, () => {

@@ -13,7 +13,12 @@ const UserSchema = new mongoose.Schema({
         index : true
     },
 
-    phone : {
+    Password : {
+        type : String,
+        required : true
+    },
+
+    Phone : {
         type : String,
         required : true
     },
@@ -32,3 +37,5 @@ const UserSchema = new mongoose.Schema({
         index : true
     }
 })
+
+export default mongoose.model("User" , UserSchema)

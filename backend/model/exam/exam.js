@@ -1,5 +1,4 @@
 import mongoose from "mongoose"
-// import { Exam_DB } from "../../DB/db.js";
 
 const ExamSchema = new mongoose.Schema({
 
@@ -20,13 +19,18 @@ const ExamSchema = new mongoose.Schema({
         required: true
     },
 
-    AdminId: {
+    Admin: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "Admin",
         required: true,
         index: true,
     },
 
+    MarkPerQuestion : {
+        type : Number,
+        required : true
+    },
+    
     Questions: [
         {
             Name: { type: String, required: true },
