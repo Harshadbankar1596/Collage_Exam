@@ -12,7 +12,8 @@ router.post("/login-user", UserLogin)
 
 router.post("/submit-exam" , UserAuth , SubmitExams)
 
-router.get("/get-exam/:examId" , UserAuth , GetExam)
+router.get("/get-exam/:examId"  , GetExam)
+// router.get("/get-exam/:examId" , UserAuth , GetExam)
 
 
 

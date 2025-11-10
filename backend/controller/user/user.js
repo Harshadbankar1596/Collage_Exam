@@ -29,6 +29,8 @@ export const GetExam = asyncHandler(async (req, res) => {
     })
 })
 
+
+
 export const SubmitExams = asyncHandler(async (req, res) => {
     const { ExamId, UserId, Answers } = req.body
 

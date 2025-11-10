@@ -8,11 +8,12 @@ import Admin from "../../model/admin/admin.js";
 import validator from "validator";
 
 export const CreateAdmin = asyncHandler(async (req, res) => {
+    console.log(req.body)
     const { Name, Email, Phone, Password, Role, CollegeName } = req.body;
 
     if (!Name || !Email || !Phone || !Password || !Role || !CollegeName) {
-       return res.status(400).json({ message: "All fields are mandatory" });
-        
+        return res.status(400).json({ message: "All fields are mandatory" });
+
     }
 
     if (!validator.isEmail(Email)) {
@@ -40,6 +41,9 @@ export const CreateAdmin = asyncHandler(async (req, res) => {
         CollegeName,
     });
 
+    const token = jwt.sign({ id: admin._id }, process.env.JWT_SECRET, { expiresIn: "1d" })
+    res.cookie("token", token, { httpOnly: true, secure: true, sameSite: 'None', maxAge: 24 * 60 * 60 * 1000 });
+
     res.status(201).json({
         message: "Admin created successfully",
         admin: {
@@ -47,6 +51,9 @@ export const CreateAdmin = asyncHandler(async (req, res) => {
             Name: admin.Name,
             Email: admin.Email,
             Role: admin.Role,
+            CollegeName: admin.CollegeName,
+            token: token,
+            Phone: admin.Phone
         },
     });
 });
@@ -61,30 +68,30 @@ export const LoginAdmin = asyncHandler(async (req, res) => {
 
     const admin = await Admin.findOne({ Email })
     if (!admin) {
-       return res.status(400).json({ message: "Invalid Credentials" })
+        return res.status(400).json({ message: "Invalid Credentials" })
     }
+
     const isPasswordMatch = await bcrypt.compare(Password, admin.Password)
 
     if (!isPasswordMatch) {
-       return res.status(400).json({message : "Invalid Password"})
+        return res.status(400).json({ message: "Invalid Password" })
     }
 
     const token = jwt.sign({ id: admin._id }, process.env.JWT_SECRET, { expiresIn: "1d" })
     res.cookie("token", token, { httpOnly: true, secure: true, sameSite: 'None', maxAge: 24 * 60 * 60 * 1000 });
 
-    
 
-    const Temp_Admin = {
-        Name: admin.Name,
-        Email: admin.Email,
-        Phone: admin.Phone,
-        Role: admin.Role,
-        CollegeName: admin.CollegeName
-    }
 
     res.status(200).json({
         message: "Login Successful",
-        token,
-        Admin: Temp_Admin
+        admin: {
+            _id: admin._id,
+            Name: admin.Name,
+            Email: admin.Email,
+            Role: admin.Role,
+            CollegeName: admin.CollegeName,
+            token: token,
+            Phone: admin.Phone
+        }
     })
 })
