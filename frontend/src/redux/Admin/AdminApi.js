@@ -27,7 +27,16 @@ export const apiSlice = createApi({
         body: data,
       }),
     }),
+
+    logoutAdmin : builder.mutation({
+      query : ()=>({
+        url : "/logout-admin",
+        method : "POST",
+      })
+    }),
+
+
   }),
 });
 
-export const { useRegisterAdminMutation, useLoginAdminMutation } = apiSlice;
+export const { useRegisterAdminMutation, useLoginAdminMutation , useLogoutAdminMutation} = apiSlice;

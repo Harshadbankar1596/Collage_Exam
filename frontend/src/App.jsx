@@ -9,7 +9,6 @@ import AdminRegister from "./components/AdminRegister.jsx";
 import AdminLogin from "./components/AdminLogin.jsx"
 const App = () => {
   const params = useLocation();
-  console.log(params.pathname.includes("admin"))
   return (
     <div className="flex bg-gradient-to-br from-[#e8f0ff] via-[#f4f7ff] to-[#e8f0ff]">
       

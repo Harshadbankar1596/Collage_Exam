@@ -95,3 +95,15 @@ export const LoginAdmin = asyncHandler(async (req, res) => {
         }
     })
 })
+
+
+
+export const LogoutAdmin = asyncHandler(async (req, res) => {
+  res.clearCookie("token", {
+    httpOnly: true,
+    secure: true,      // use true in production with HTTPS
+    sameSite: "none",  // match sameSite used when setting cookie
+  });
+
+  res.status(200).json({ message: "Logout Successful" });
+});

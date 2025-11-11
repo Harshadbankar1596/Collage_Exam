@@ -6,3 +6,22 @@
 *{
     font-family: "Baloo 2", sans-serif;
 }
+
+@keyframes spin-smooth {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.logo-spin {
+  animation: spin-smooth linear infinite;
+  animation-duration: 30s;
+  transition: animation-duration 0.9s ease-in-out; /* Smooth speed change */
+}
+
+.logo-spin:hover {
+  animation-duration: 2s; /* On hover, gradually become faster */
+}

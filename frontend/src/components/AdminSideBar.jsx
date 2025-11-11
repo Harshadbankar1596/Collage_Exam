@@ -1,39 +1,109 @@
-import React from 'react'
-import Logo from "./Logo"
-import { Link } from "react-router-dom"
-import { LayoutDashboard } from 'lucide-react';
+import React, { useState } from "react";
+import Logo from "./Logo";
+import Name from "./Name";
+import { Link , useNavigate} from "react-router-dom";
+import { useLogoutAdminMutation } from "../redux/Admin/AdminApi";
+import {
+    LayoutDashboard,
+    LogOut,
+    BookOpenCheck,
+    BookLock,
+    UsersRound,
+    ShieldUser,
+    Menu,
+    X,
+} from "lucide-react";
+import {logoutAdmin} from "../redux/Admin/AdminSlice.js"
+import { useDispatch } from "react-redux";
+import { toast } from "react-toastify";
 
 const AdminSideBar = () => {
+    const [open, setOpen] = useState(false);
+    const [logout, { isLoading, isError }] = useLogoutAdminMutation()
+    const dispatch = useDispatch()
+    const navigate = useNavigate()
 
     const sides = [
-        { name: "Dashboard", link: "/admin/", icon: <LayoutDashboard className="size-8" /> },
-        // You can easily add more here later
-        // { name: "Users", link: "/admin/users", icon: <Users className="size-8" /> },
-        // { name: "Settings", link: "/admin/settings", icon: <Settings className="size-8" /> },
+        { name: "Dashboard", link: "/admin/", icon: <LayoutDashboard className="size-6 md:size-8" /> },
+        { name: "Exams", link: "/admin/exams", icon: <BookOpenCheck className="size-6 md:size-8" /> },
+        { name: "CreateExam", link: "/admin/exams", icon: <BookLock className="size-6 md:size-8" /> },
+        { name: "Students", link: "/admin/exams", icon: <UsersRound className="size-6 md:size-8" /> },
+        { name: "Teachers Staff", link: "/admin/exams", icon: <ShieldUser className="size-6 md:size-8" /> },
     ];
 
+   async function logoutadmin(){
+        try {
+            const res = await logout().unwrap()
+            toast.success("Logout Successful!")
+            dispatch(logoutAdmin())
+            navigate("/admin/login")
+        } catch (error) {
+            console.log(error)
+            toast.error(error?.data?.message || "Error In Logout")
+        }
+    }
+
     return (
-        <div className='bg-blue-900 h-screen w-1/4 flex flex-col'>
-            {/* Logo Section */}
-            <div className='flex items-center justify-center text-white font-bold text-3xl py-12'>
-                <Logo size={50} />
-                <p className='ml-2'>ptimized</p>
+        <>
+            {/* ======= Toggle Button (Only on Mobile) ======= */}
+            <button
+                onClick={() => setOpen(!open)}
+                className="md:hidden fixed top-4 left-4 z-50 p-2 bg-white shadow-lg rounded-full text-blue-900 hover:bg-blue-100 transition-all"
+            >
+                {open ? <X size={26} /> : <Menu size={26} />}
+            </button>
+
+            <div
+                className={`
+          bg-blue-900 text-white 
+          fixed md:static 
+          top-0 left-0 
+          h-full md:h-screen 
+          w-64 md:w-1/4 
+          flex flex-col justify-between 
+          transform md:translate-x-0 
+          transition-transform duration-300 ease-in-out 
+          z-40
+          overflow-auto
+          ${open ? "translate-x-0" : "-translate-x-full md:translate-x-0"}
+        `}
+            >
+                <div className="flex gap-2 items-center justify-center py-10 border-b border-white/10">
+                    <Logo size={40} />
+                    <Name size={24} />
+                </div>
+
+                {/* ======= Sidebar Links ======= */}
+                <div className="flex flex-col gap-2 mt-4 px-2">
+                    {sides.map((side, index) => (
+                        <Link
+                            key={index}
+                            to={side.link}
+                            onClick={() => setOpen(false)} // Close menu on mobile after click
+                            className="flex items-center gap-3 p-3 mx-2 rounded-lg hover:bg-blue-700 transition-all duration-300"
+                        >
+                            {side.icon}
+                            <p className="text-lg">{side.name}</p>
+                        </Link>
+                    ))}
+                </div>
+
+                {/* ======= Logout Button ======= */}
+                <div className="py-6 flex items-center w-full">
+                    <button onClick={logoutadmin} className="text-white flex items-center w-full gap-3 p-3 mx-3 rounded-lg hover:bg-red-500 transition-all duration-300">
+                        <LogOut className="size-6 md:size-8" />
+                        <p className={`text-lg ${isLoading ? "cursor-not-allowed" : "cursor-pointer"}`}>{isLoading ? "Loading..." : "Logout"}</p>
+                    </button>
+                </div>
             </div>
 
-            {/* Sidebar Links */}
-            <div className='flex flex-col gap-2'>
-                {sides.map((side, index) => (
-                    <Link
-                        key={index}
-                        to={side.link}
-                        className='text-white flex items-center gap-3 p-4 mx-3 rounded-lg hover:bg-blue-700 transition-all duration-300'
-                    >
-                        {side.icon}
-                        <p className='text-xl'>{side.name}</p>
-                    </Link>
-                ))}
-            </div>
-        </div>
+            {open && (
+                <div
+                    className="fixed inset-0 bg-black/40 backdrop-blur-sm md:hidden z-30"
+                    onClick={() => setOpen(false)}
+                ></div>
+            )}
+        </>
     );
 };
 

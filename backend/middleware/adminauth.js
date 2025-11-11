@@ -20,7 +20,7 @@ const AdminAuth = AsyncHandler(async (req ,res , next) => {
         const admin = await Admin.findById(decoded.id).select("_id").lean()
 
         if(!admin){
-            res.status(401).json({message : "Unauthorized"})
+            res.status(401).json({message : "Admin Not Unauthorized"})
         }
 
         next()
