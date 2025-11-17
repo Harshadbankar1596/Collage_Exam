@@ -41,7 +41,16 @@ const ExamSchema = new mongoose.Schema({
 
     Duration: {
         type: Number
+    },
+
+    Participants : {
+        type : Number,
+        default : 0
     }
+
+    // StartTime :{
+    //     type : Date,
+    // }
 
 }, { timestamps: true })
 

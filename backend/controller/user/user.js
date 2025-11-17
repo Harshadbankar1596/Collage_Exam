@@ -38,7 +38,7 @@ export const SubmitExams = asyncHandler(async (req, res) => {
         return res.status(400).json({ message: "All Fealds Are Required" })
     }
 
-    const existexam = await Exam.findById(ExamId).lean()
+    const existexam = await Exam.findById(ExamId)
 
     if (!existexam) return res.status(404).json({ message: "Exam Not Found" });
 
@@ -48,6 +48,8 @@ export const SubmitExams = asyncHandler(async (req, res) => {
 
     const submiteduser = await SubmitExam.findOne({ UserId: UserId })
 
+    existexam.Participants =+ 1
+
     if(submiteduser) return res.status(404).json({message : "User Already Submitted Exam"})
 
     const newexam = await SubmitExam.create({
@@ -55,6 +57,8 @@ export const SubmitExams = asyncHandler(async (req, res) => {
         Exam : ExamId,
         Answers,
     })
+    
+    await existexam.save()
 
     res.status(201).json({ message: "Exam Submmited Succsess Full" })
 

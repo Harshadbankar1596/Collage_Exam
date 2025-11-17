@@ -4,14 +4,20 @@ import Admin from "../../model/admin/admin.js";
 import mongoose from "mongoose";
 import SubmitExam from "../../model/exam/submitexam.js";
 
+
 export const CreateExam = asyncHandler(async (req, res) => {
     console.log(req.body)
 
-    const { ExamName, ExamCode, Class, AdminId, Questions, Duration , MarkPerQuestion } = req.body;
+    const { ExamName, ExamCode, Class, AdminId, Questions, Duration, MarkPerQuestion } = req.body;
 
     if (!ExamName || !ExamCode || !Class || !AdminId || !Questions || !MarkPerQuestion) {
         res.status(400);
         throw new Error("All fields are mandatory");
+    }
+
+    const existExam = await Exam.findOne({ExamCode : ExamCode})
+    if(existExam) {
+        res.status(404).json({message : "Exam Code Already Exist"})
     }
 
     const admin = await Admin.findById(AdminId).lean()
@@ -24,7 +30,7 @@ export const CreateExam = asyncHandler(async (req, res) => {
         ExamName,
         ExamCode,
         Class,
-        Admin : AdminId,
+        Admin: AdminId,
         MarkPerQuestion,
         Questions,
         Duration
@@ -56,7 +62,7 @@ export const DeleteExam = asyncHandler(async (req, res) => {
         return;
     }
 
-    if (exam.AdminId.toString() !== AdminId) {
+    if (exam.Admin.toString() !== AdminId) {
         res.status(403).json({ message: "You are not authorized to delete this exam" });
         return;
     }
@@ -95,7 +101,7 @@ export const GetAllExams = asyncHandler(async (req, res) => {
 
     const [exams, total] = await Promise.all([
         Exam.find({ AdminId })
-            .select("ExamName ExamCode Class Questions Duration")
+            .select("ExamName ExamCode Class Questions Duration createdAt Participants MarkPerQuestion")
             .hint({ AdminId: 1 })
             .skip(skip)
             .limit(limit)
@@ -116,46 +122,62 @@ export const GetAllExams = asyncHandler(async (req, res) => {
     });
 })
 
-export const UpdateExam = asyncHandler(async (req, res) => {
-  const { ExamId, AdminId, updateData } = req.body;
-
-  if (!ExamId || !AdminId || !updateData || typeof updateData !== "object") {
-    return res.status(400).json({ message: "ExamId, AdminId, and updateData are required" });
-  }
-
-  const examObjectId = new mongoose.Types.ObjectId(ExamId);
-  const adminObjectId = new mongoose.Types.ObjectId(AdminId);
-
-  delete updateData._id;
-  delete updateData.AdminId;
-  delete updateData.ExamCode;
-
-  const result = await Exam.updateOne(
-    { _id: examObjectId, AdminId: adminObjectId },
-    { $set: updateData }
-  );
-
-  if (result.matchedCount === 0) {
-    return res.status(404).json({ message: "Exam not found or unauthorized" });
-  }
-
-  if (result.modifiedCount === 0) {
-    return res.status(200).json({ message: "No changes detected" });
-  }
-
-  res.status(200).json({ message: "Exam updated successfully" });
-})
-
-export const GetSubmitedExam = asyncHandler(async(req , res)=>{
-
+export const GetExamById = asyncHandler(async (req , res)=>{
     const {ExamId} = req.params
 
-    if(!ExamId) return res.status(400).json({message : "ExamId Required"});
+    if(!ExamId){
+        return res.status(404).json({message : "ExamId Not Found"})
+    }
 
-    const Exam = await SubmitExam.findOne({Exam : ExamId}).lean().populate("Exam")
+    const exam = await Exam.findById(ExamId).lean()
 
-    if(!Exam) return res.status(404).json({message : "Exam Not Found"});
+    if(!exam){
+        return res.status(404).json({message : "Exam Not Found"})
+    }
 
-    res.status(200).json({Exam : Exam})
+    res.status(200).json({message : "Sucsses" , Exam : exam})
+})
+
+export const UpdateExam = asyncHandler(async (req, res) => {
+    const { ExamId, AdminId, updateData } = req.body;
+
+    if (!ExamId || !AdminId || !updateData || typeof updateData !== "object") {
+        return res.status(400).json({ message: "ExamId, AdminId, and updateData are required" });
+    }
+
+    const examObjectId = new mongoose.Types.ObjectId(ExamId);
+    const adminObjectId = new mongoose.Types.ObjectId(AdminId);
+
+    delete updateData._id;
+    delete updateData.AdminId;
+    delete updateData.ExamCode;
+
+    const result = await Exam.updateOne(
+        { _id: examObjectId, AdminId: adminObjectId },
+        { $set: updateData }
+    );
+
+    if (result.matchedCount === 0) {
+        return res.status(404).json({ message: "Exam not found or unauthorized" });
+    }
+
+    if (result.modifiedCount === 0) {
+        return res.status(200).json({ message: "No changes detected" });
+    }
+
+    res.status(200).json({ message: "Exam updated successfully" });
+})
+
+export const GetSubmitedExam = asyncHandler(async (req, res) => {
+
+    const { ExamId } = req.params
+
+    if (!ExamId) return res.status(400).json({ message: "ExamId Required" });
+
+    const Exam = await SubmitExam.findOne({ Exam: ExamId }).lean().populate("Exam")
+
+    if (!Exam) return res.status(404).json({ message: "Exam Not Found" });
+
+    res.status(200).json({ Exam: Exam })
 
 })

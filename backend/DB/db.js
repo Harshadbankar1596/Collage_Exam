@@ -20,7 +20,6 @@ const ConnectDB = async () => {
         socketTimeoutMS: 60000,
         connectTimeoutMS: 10000,
         heartbeatFrequencyMS: 10000,
-        family: 4,
     };
 
     try {
