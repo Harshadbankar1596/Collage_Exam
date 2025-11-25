@@ -80,7 +80,7 @@ const AdminSideBar = () => {
               key={index}
               to={side.link}
               onClick={() => setOpen(false)}
-              className="flex items-center gap-3 p-3 mx-2 rounded-lg hover:bg-blue-700 transition-all duration-300"
+              className="flex items-center gap-3 p-3 mx-2 rounded-lg hover:bg-yellow-500 transition-all duration-300"
             >
               {side.icon}
               <p className="text-lg">{side.name}</p>
