@@ -3,6 +3,7 @@ import Exam from "../../model/exam/exam.js";
 import Admin from "../../model/admin/admin.js";
 import mongoose from "mongoose";
 import SubmitExam from "../../model/exam/submitexam.js";
+import User from "../../model/user/user.js";
 
 
 export const CreateExam = asyncHandler(async (req, res) => {
@@ -173,11 +174,32 @@ export const GetSubmitedExam = asyncHandler(async (req, res) => {
     const { ExamId } = req.params
 
     if (!ExamId) return res.status(400).json({ message: "ExamId Required" });
+    const exam = await Exam.findById(ExamId).lean()
 
-    const Exam = await SubmitExam.findOne({ Exam: ExamId }).lean().populate("Exam")
+    if (!exam) return res.status(404).json({ message: "Exam Not Found" });
 
-    if (!Exam) return res.status(404).json({ message: "Exam Not Found" });
+    const SubmitedExam = await SubmitExam.find({ Exam: ExamId }).lean().populate("UserId")
 
-    res.status(200).json({ Exam: Exam })
+    if (!SubmitedExam) return res.status(404).json({ message: "Exam Not Found" });
 
+    res.status(200).json({ SubmitedExam: SubmitedExam , Exam : exam })
+
+})
+
+export const GetUser = asyncHandler(async (req , res) => {
+    // const {AdminId} = req.params
+
+    // if(!AdminId) return res.status(400).json({message : "AdminId Required"});
+
+    const students = await User.find().lean().select("Name Email Phone RollNo PRN");
+
+    if(!students) return res.status(404).json({message : "Students Not Found"});
+
+    res.status(200).json({students})
+})
+
+export const GetAllAdmin = asyncHandler(async (req , res) => {
+    const admins = await Admin.find().lean().select("Name Email Role CollegeName");
+    if(!admins) return res.status(404).json({message : "Admins Not Found"});
+    res.status(200).json({admins})
 })

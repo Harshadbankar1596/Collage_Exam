@@ -28,8 +28,8 @@ const ExamDetail = ({ exam, onClose }) => {
 
               {/* Question Title */}
               <pre className="text-lg font-semibold text-gray-900 mb-3 whitespace-pre-wrap">
-  {qIndex + 1}. {question.Name}
-</pre>
+                {qIndex + 1}. {question.Name}
+              </pre>
 
 
               {/* Options */}
@@ -39,8 +39,8 @@ const ExamDetail = ({ exam, onClose }) => {
                     key={index}
                     className={`p-3 rounded-xl border flex justify-between items-center shadow-sm
                     ${question.Answer === opt
-                      ? "bg-green-100 border-green-500"
-                      : "bg-gray-50 border-gray-300"}`}
+                        ? "bg-green-100 border-green-500"
+                        : "bg-gray-50 border-gray-300"}`}
                   >
                     <span>{opt}</span>
 

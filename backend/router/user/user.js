@@ -15,6 +15,4 @@ router.post("/submit-exam" , UserAuth , SubmitExams)
 router.get("/get-exam/:examId"  , GetExam)
 // router.get("/get-exam/:examId" , UserAuth , GetExam)
 
-
-
 export default router

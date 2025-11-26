@@ -48,7 +48,7 @@ export const SubmitExams = asyncHandler(async (req, res) => {
 
     const submiteduser = await SubmitExam.findOne({ UserId: UserId })
 
-    existexam.Participants =+ 1
+    existexam.Participants += 1
 
     if(submiteduser) return res.status(404).json({message : "User Already Submitted Exam"})
 

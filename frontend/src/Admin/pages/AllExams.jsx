@@ -3,9 +3,10 @@ import { useGetAllExamQuery, useDeleteExamMutation } from "../../redux/Admin/Adm
 import { useSelector } from "react-redux";
 import Loader from "../../components/Loader";
 import { Edit3, Trash2, Eye, Calendar, Users, BookOpen, AlertTriangle, X } from "lucide-react";
-import ExamDetail from "./ExamDetail";
+import ExamDetail from "./Exams/ExamDetail";
 import { toast } from "react-toastify";
 import UpdateExamModel from "./UpdateExamModel";
+import { Link } from "react-router-dom";
 
 const AllExams = () => {
     const admin = useSelector((state) => state.admin);
@@ -124,7 +125,7 @@ const AllExams = () => {
 
                 <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
                     {[...(exams?.exams || [])].reverse().map((exam) => (
-                        <div
+                        <Link to={`/admin/submited-exam/${exam._id}`}
                             key={exam._id}
                             className="bg-white rounded-2xl shadow-lg border border-gray-200 overflow-hidden hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1"
                         >
@@ -168,7 +169,7 @@ const AllExams = () => {
 
                                 <div className="flex justify-between items-center pt-4 border-t border-gray-100">
                                     <button
-                                        onClick={() => setSelectedExam(exam)}
+                                        onClick={(e) => {e.preventDefault() ; setSelectedExam(exam)}}
                                         className="flex items-center text-blue-600 hover:text-blue-700 font-medium text-sm transition-colors"
                                     >
                                         <Eye size={16} className="mr-1" />
@@ -177,7 +178,7 @@ const AllExams = () => {
 
                                     <div className="flex space-x-2">
                                         <button
-                                            onClick={() => setExamdata(exam)}
+                                            onClick={(e) => {e.preventDefault(); setExamdata(exam)}}
                                             className="flex items-center bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition-colors text-sm font-medium"
                                         >
                                             <Edit3 size={16} className="mr-1" />
@@ -185,7 +186,7 @@ const AllExams = () => {
                                         </button>
 
                                         <button
-                                            onClick={() => setConfirmDelete(exam._id)}
+                                            onClick={(e) => {e.preventDefault() ; setConfirmDelete(exam._id)}}
                                             className="flex items-center bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600 transition-colors text-sm font-medium"
                                         >
                                             <Trash2 size={16} className="mr-2" />
@@ -194,7 +195,7 @@ const AllExams = () => {
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        </Link>
                     ))}
                 </div>
             </div>

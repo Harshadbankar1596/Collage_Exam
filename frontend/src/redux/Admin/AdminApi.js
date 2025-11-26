@@ -75,9 +75,23 @@ export const apiSlice = createApi({
         body : formData
       }),
       invalidatesTags: ["exam"]
+    }),
+
+    getSubmittedExam : builder.query({
+      query : (ExamId)=> ({
+        url : `/get-submited-exam/${ExamId}`,
+        method : "GET"
+      })
+    }),
+
+    getAllUsers : builder.query({
+      query : () => ({
+        url : "/get-students",
+        method : "GET"
+      })
     })
 
   }),
 });
 
-export const { useRegisterAdminMutation, useLoginAdminMutation, useLogoutAdminMutation, useCreateExamMutation, useGetAllExamQuery, useGetExamByIdQuery , useDeleteExamMutation , useUpdateExamMutation} = apiSlice;
+export const { useRegisterAdminMutation, useLoginAdminMutation, useLogoutAdminMutation, useCreateExamMutation, useGetAllExamQuery, useGetExamByIdQuery , useDeleteExamMutation , useUpdateExamMutation , useGetSubmittedExamQuery , useGetAllUsersQuery} = apiSlice;
