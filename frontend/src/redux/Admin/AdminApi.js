@@ -74,19 +74,35 @@ export const apiSlice = createApi({
         method : "PUT",
         body : formData
       }),
-      invalidatesTags: ["exam"]
+      invalidatesTags: ["exam" , "submitedexam"]
     }),
 
     getSubmittedExam : builder.query({
       query : (ExamId)=> ({
         url : `/get-submited-exam/${ExamId}`,
         method : "GET"
-      })
+      }),
+      providertags : ["submitedexam"]
     }),
 
     getAllUsers : builder.query({
       query : () => ({
         url : "/get-students",
+        method : "GET"
+      }),
+      invalidatesTags : ["submitedexam"]
+    }),
+
+    getAllAdmins : builder.query({
+      query : () => ({
+        url : "/get-all-admins",
+        method : "GET"
+      })
+    }),
+
+    getDashboardStats : builder.query({
+      query : (AdminId) => ({
+        url : `/dashboard-stats/${AdminId}`,
         method : "GET"
       })
     })
@@ -94,4 +110,4 @@ export const apiSlice = createApi({
   }),
 });
 
-export const { useRegisterAdminMutation, useLoginAdminMutation, useLogoutAdminMutation, useCreateExamMutation, useGetAllExamQuery, useGetExamByIdQuery , useDeleteExamMutation , useUpdateExamMutation , useGetSubmittedExamQuery , useGetAllUsersQuery} = apiSlice;
+export const { useRegisterAdminMutation, useLoginAdminMutation, useLogoutAdminMutation, useCreateExamMutation, useGetAllExamQuery, useGetExamByIdQuery , useDeleteExamMutation , useUpdateExamMutation , useGetSubmittedExamQuery , useGetAllUsersQuery , useGetAllAdminsQuery , useGetDashboardStatsQuery} = apiSlice;

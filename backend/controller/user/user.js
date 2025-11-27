@@ -56,6 +56,7 @@ export const SubmitExams = asyncHandler(async (req, res) => {
         UserId,
         Exam : ExamId,
         Answers,
+        Admin : existexam.Admin
     })
     
     await existexam.save()

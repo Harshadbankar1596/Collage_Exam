@@ -2,7 +2,7 @@
 import React from "react";
 import { useParams } from "react-router-dom";
 import { useGetSubmittedExamQuery } from "../../../redux/Admin/AdminApi";
-
+import Loader from "../../../components/Loader";
 import {
   BookOpen,
   Clock,
@@ -14,11 +14,6 @@ import {
   Hash,
 } from "lucide-react";
 
-/**
- Expected shape:
- data.Exam -> { Questions: [{ _id, Name, Answer, ... }], MarkPerQuestion, ... }
- data.SubmitedExam -> [ { _id, Answers: [{ QuestionId, Submit }], UserId: { Name, Email, RollNo, PRN }, createdAt } ]
-*/
 
 const SmallExamCard = ({ exam }) => {
   if (!exam) return null;
@@ -186,19 +181,18 @@ const SubmittedExam = () => {
   const { ExamId } = useParams();
   const { data, isLoading } = useGetSubmittedExamQuery(ExamId);
 
-  if (isLoading) return <div className="p-8 text-lg">Loading...</div>;
-  if (!data) return <div className="p-8 text-lg">No data found</div>;
-
+  
   const exam = data?.Exam || {};
   const submissions = data?.SubmitedExam || [];
-
+  
   // prepare question list and map for quick lookup
   const questions = Array.isArray(exam?.Questions) ? exam.Questions : [];
   const questionsMap = {};
   questions.forEach((q) => {
     if (q && q._id) questionsMap[q._id] = q;
   });
-
+  
+  if (isLoading) return <Loader text={"Loading Exams..."} />;
   return (
     <div className="min-h-screen w-full p-6 flex flex-col items-center gap-6">
       <div className="w-full max-w-4xl">

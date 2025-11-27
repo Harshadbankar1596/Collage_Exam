@@ -8,19 +8,25 @@ const AdminProtected = ({ Element }) => {
     const admin = useSelector((state) => state.admin);
 
     useEffect(() => {
-        if (!admin || !admin.token) {
-            navigate("/login");
+        if (!admin || !admin?.token) {
+            navigate("/admin/login");
             return;
         }
 
         try {
             const decoded = jwtDecode(admin.token);
-
-            if (decoded.exp < Date.now() / 1000) {
-                navigate("/login");
+            console.log(Date.now()/1000);
+            console.log(decoded.exp);
+            
+            if (decoded?.exp < Date.now() / 1000) {
+                console.log("qwer");
+                
+                navigate("/admin/login");
             }
+
         } catch (error) {
-            navigate("/login");
+            console.log(error);
+            navigate("/admin/login");
         }
     }, [admin, navigate]);
 

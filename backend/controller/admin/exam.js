@@ -203,3 +203,12 @@ export const GetAllAdmin = asyncHandler(async (req , res) => {
     if(!admins) return res.status(404).json({message : "Admins Not Found"});
     res.status(200).json({admins})
 })
+
+export const GetDashboardStats = asyncHandler(async (req , res) => {
+    const {AdminId} = req.params;
+    if(!AdminId) return res.status(400).json({message : "AdminId Required"});
+    const admin = await Admin.findById(AdminId).lean();
+    const examCount = await Exam.countDocuments({Admin : AdminId});
+    const submitExamCount = await SubmitExam.countDocuments({Admin : AdminId})
+    res.status(200).json({examCount , submitExamCount , admin})
+})    

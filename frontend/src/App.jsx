@@ -11,6 +11,9 @@ import AllExams from "./Admin/pages/AllExams.jsx";
 import AdminProtected from "./components/AdminProtected.jsx";
 import SubmittedExam from "./Admin/pages/Exams/SubmittedExam.jsx";
 import Students from "./Admin/pages/Students.jsx";
+import Teachers from "./Admin/pages/Teachers.jsx";
+import DashBoard from "./Admin/pages/DashBoard.jsx";
+
 
 const App = () => {
   const location = useLocation();
@@ -35,9 +38,11 @@ const App = () => {
             <Route path="/admin/create-exam" element={
               <AdminProtected Element={<CreateExam />} />
             } />
+            <Route path="/admin/dashboard" element={<AdminProtected Element={<DashBoard />} />} />
             <Route path="/admin/exams" element={<AdminProtected Element={<AllExams />} />} />
             <Route path="/admin/submited-exam/:ExamId" element={<AdminProtected Element={<SubmittedExam />} />} />
             <Route path="/admin/students" element={<AdminProtected Element={<Students />} />} />
+            <Route path="/admin/teachers" element={<AdminProtected Element={<Teachers />} />} />
 
           </Routes>
         </div>

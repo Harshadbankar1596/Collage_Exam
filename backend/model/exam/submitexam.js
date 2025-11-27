@@ -14,6 +14,13 @@ const SubmitExamSchema = new mongoose.Schema({
         index : true
     },
 
+    Admin : {
+        type : mongoose.Schema.Types.ObjectId,
+        required : true,
+        ref : "Admin",
+        index : true
+    },
+
     Answers : [
         {
             QuestionId : {type : mongoose.Schema.Types.ObjectId},

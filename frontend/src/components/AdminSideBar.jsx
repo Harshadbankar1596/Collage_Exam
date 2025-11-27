@@ -24,7 +24,7 @@ const AdminSideBar = () => {
   const navigate = useNavigate();
 
   const sides = [
-    { name: "Dashboard", link: "/admin/", icon: <LayoutDashboard className="size-6 md:size-8" /> },
+    { name: "Dashboard", link: "/admin/dashboard", icon: <LayoutDashboard className="size-6 md:size-8" /> },
     { name: "Exams", link: "/admin/exams", icon: <BookOpenCheck className="size-6 md:size-8" /> },
     { name: "Create Exam", link: "/admin/create-exam", icon: <BookLock className="size-6 md:size-8" /> },
     { name: "Students", link: "/admin/students", icon: <UsersRound className="size-6 md:size-8" /> },

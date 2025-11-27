@@ -32,7 +32,7 @@ const AdminLogin = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center px-4 py-8 bg-gray-50">
+    <div className="min-h-screen w-full flex items-center justify-center px-4 py-8 bg-gray-50">
       <div className="flex flex-col md:flex-row w-full max-w-5xl bg-white rounded-3xl shadow-2xl overflow-hidden border border-gray-100">
 
         {/* ==== Left Side ==== */}
