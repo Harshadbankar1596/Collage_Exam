@@ -140,6 +140,8 @@ export const GetExamById = asyncHandler(async (req , res)=>{
 })
 
 export const UpdateExam = asyncHandler(async (req, res) => {
+    console.log(req.body);
+    
     const { ExamId, AdminId, updateData } = req.body;
 
     if (!ExamId || !AdminId || !updateData || typeof updateData !== "object") {

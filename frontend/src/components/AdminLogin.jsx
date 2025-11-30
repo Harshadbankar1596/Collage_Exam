@@ -35,7 +35,6 @@ const AdminLogin = () => {
     <div className="min-h-screen w-full flex items-center justify-center px-4 py-8 bg-gray-50">
       <div className="flex flex-col md:flex-row w-full max-w-5xl bg-white rounded-3xl shadow-2xl overflow-hidden border border-gray-100">
 
-        {/* ==== Left Side ==== */}
         <div
           className="relative w-full md:w-1/2 text-white flex flex-col justify-center items-center px-6 sm:px-10 py-10 sm:py-14 
              bg-[url('/examcunduct.png')] bg-cover bg-center bg-no-repeat overflow-hidden"
@@ -63,7 +62,6 @@ const AdminLogin = () => {
           </div>
         </div>
 
-        {/* ==== Right Side ==== */}
         <div className="w-full md:w-1/2 px-6 sm:px-10 py-10 sm:py-14 flex flex-col justify-center">
           <div className="mb-6 text-center md:text-left">
             <h2 className="text-2xl sm:text-3xl font-bold text-gray-800">
@@ -78,7 +76,6 @@ const AdminLogin = () => {
             onSubmit={handleSubmit(submit)}
             className="flex flex-col gap-5 text-sm"
           >
-            {/* Email */}
             <div>
               <label className="text-gray-700 mb-1 block font-medium">
                 E-mail Address
@@ -102,7 +99,6 @@ const AdminLogin = () => {
                 
             </div>
 
-            {/* Password */}
             <div>
               <label className="text-gray-700 mb-1 block font-medium">
                 Password
@@ -120,7 +116,6 @@ const AdminLogin = () => {
               )}
             </div>
 
-            {/* Forgot Password */}
             <div className="flex justify-end">
               <Link
                 to={"/admin/forgotpassword"}
@@ -130,7 +125,6 @@ const AdminLogin = () => {
               </Link>
             </div>
 
-            {/* Login Button */}
             <button
               type="submit"
               disabled={isLoading}
@@ -139,7 +133,6 @@ const AdminLogin = () => {
               {isLoading ? "Login..." : "Login"}
             </button>
 
-            {/* Register */}
             <p className="text-center text-gray-600 text-sm mt-3">
               Not registered?{" "}
               <Link

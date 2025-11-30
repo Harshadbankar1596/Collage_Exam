@@ -34,10 +34,10 @@ const AllExams = () => {
                 AdminId: admin.id,
                 ExamId: confirmDelete,
             }).unwrap();
-
             toast.success(res.message || "Exam Deleted");
             setConfirmDelete(null); // close modal
         } catch (error) {
+            console.log(error);
             toast.error(error?.data?.message || "Error In Delete Exam");
         } finally {
             setDeleteLoading(null);

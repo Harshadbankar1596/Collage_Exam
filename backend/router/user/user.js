@@ -1,5 +1,5 @@
 import express from "express"
-
+import { mongoSanitizeMiddleware } from "../../middleware/datasinitizedauth.js"
 import { RegisterUser, UserLogin } from "../../controller/user/login.js"
 import { GetExam, SubmitExams } from "../../controller/user/user.js"
 import UserAuth from "../../middleware/userauth.js"
@@ -10,9 +10,9 @@ router.post("/register-user", RegisterUser)
 
 router.post("/login-user", UserLogin)
 
-router.post("/submit-exam" , UserAuth , SubmitExams)
+router.post("/submit-exam" , UserAuth , mongoSanitizeMiddleware , SubmitExams)
 
-router.get("/get-exam/:examId"  , GetExam)
+router.get("/get-exam/:examId"  ,UserAuth , mongoSanitizeMiddleware ,  GetExam)
 // router.get("/get-exam/:examId" , UserAuth , GetExam)
 
 export default router
