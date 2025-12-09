@@ -34,7 +34,6 @@ const AdminLogin = () => {
   return (
     <div className="min-h-screen w-full flex items-center justify-center px-4 py-8 bg-gray-50">
       <div className="flex flex-col md:flex-row w-full max-w-5xl bg-white rounded-3xl shadow-2xl overflow-hidden border border-gray-100">
-
         <div
           className="relative w-full md:w-1/2 text-white flex flex-col justify-center items-center px-6 sm:px-10 py-10 sm:py-14 
              bg-[url('/examcunduct.png')] bg-cover bg-center bg-no-repeat overflow-hidden"
@@ -96,7 +95,6 @@ const AdminLogin = () => {
                   {errors.Email.message}
                 </p>
               )}
-                
             </div>
 
             <div>

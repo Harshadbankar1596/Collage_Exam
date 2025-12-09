@@ -25,14 +25,12 @@ const App = () => {
   return (
     <div className=" min-h-screen flex bg-gray-50">
       {!hideSidebar && <AdminSideBar />}
-
       <div
         className={`flex-1 min-h-screen transition-all duration-300 ${!hideSidebar ? "md:ml-72" : ""
           } flex items-center justify-center`}
       >
         <div className="w-full mx-auto flex px-5 py-5">
           <Routes>
-
             <Route path="/admin/register" element={<AdminRegister />} />
             <Route path="/admin/login" element={<AdminLogin />} />
             <Route path="/admin/create-exam" element={
@@ -43,7 +41,6 @@ const App = () => {
             <Route path="/admin/submited-exam/:ExamId" element={<AdminProtected Element={<SubmittedExam />} />} />
             <Route path="/admin/students" element={<AdminProtected Element={<Students />} />} />
             <Route path="/admin/teachers" element={<AdminProtected Element={<Teachers />} />} />
-
           </Routes>
         </div>
       </div>

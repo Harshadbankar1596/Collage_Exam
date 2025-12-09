@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useGetAllAdminsQuery } from "../../redux/Admin/AdminApi";
 
 const Teachers = () => {
-  const { data , isLoading} = useGetAllAdminsQuery();
+  const { data, isLoading } = useGetAllAdminsQuery();
   const [search, setSearch] = useState("");
 
   const filteredTeachers = data?.admins?.filter((t) => {
@@ -15,13 +15,11 @@ const Teachers = () => {
     );
   });
 
-  if(isLoading){
-    
+  if (isLoading) {
   }
 
   return (
     <div className="w-full min-h-screen flex flex-col items-center p-4">
-
       {/* Search Bar */}
       <div className="w-full max-w-4xl mb-6">
         <input
@@ -75,7 +73,6 @@ const Teachers = () => {
           </tbody>
         </table>
       </div>
-
     </div>
   );
 };
