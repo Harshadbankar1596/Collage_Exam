@@ -80,47 +80,94 @@ export const DeleteExam = asyncHandler(async (req, res) => {
 
 })
 
+// export const GetAllExams = asyncHandler(async (req, res) => {
+//     const { AdminId } = req.params;
+//     const page = Math.max(parseInt(req.query.page) || 1);
+//     const limit = Math.min(parseInt(req.query.limit) || 10);
+//     const skip = (page - 1) * limit;
+
+//     if (!AdminId || !AdminId.trim()) {
+//         return res.status(400).json({
+//             success: false,
+//             message: "AdminId is required.",
+//         });
+//     }
+
+//     if (!mongoose.isValidObjectId(AdminId)) {
+//         return res.status(400).json({
+//             success: false,
+//             message: "Invalid AdminId format.",
+//         });
+//     }
+
+//     const [exams, total] = await Promise.all([
+//         Exam.find({ AdminId })
+//             .select("ExamName ExamCode Class Questions Duration createdAt Participants MarkPerQuestion")
+//             .skip(skip)
+//             .limit(limit)
+//             .lean(),
+//         Exam.countDocuments({ AdminId }),
+//     ]);
+
+//     const totalPages = Math.ceil(total / limit);
+
+//     return res.status(200).json({
+//         success: true,
+//         total,
+//         page,
+//         totalPages,
+//         limit,
+//         count: exams.length,
+//         exams,
+//     });
+// })
+
 export const GetAllExams = asyncHandler(async (req, res) => {
-    const { AdminId } = req.params;
-    const page = Math.max(parseInt(req.query.page) || 1);
-    const limit = Math.min(parseInt(req.query.limit) || 10);
-    const skip = (page - 1) * limit;
+  const { AdminId } = req.params;
 
-    if (!AdminId || !AdminId.trim()) {
-        return res.status(400).json({
-            success: false,
-            message: "AdminId is required.",
-        });
-    }
+  const page = Math.max(parseInt(req.query.page) || 1, 1);
+  const limit = Math.min(parseInt(req.query.limit) || 10, 50);
+  const skip = (page - 1) * limit;
 
-    if (!mongoose.isValidObjectId(AdminId)) {
-        return res.status(400).json({
-            success: false,
-            message: "Invalid AdminId format.",
-        });
-    }
-
-    const [exams, total] = await Promise.all([
-        Exam.find({ AdminId })
-            .select("ExamName ExamCode Class Questions Duration createdAt Participants MarkPerQuestion")
-            .skip(skip)
-            .limit(limit)
-            .lean(),
-        Exam.countDocuments({ AdminId }),
-    ]);
-
-    const totalPages = Math.ceil(total / limit);
-
-    return res.status(200).json({
-        success: true,
-        total,
-        page,
-        totalPages,
-        limit,
-        count: exams.length,
-        exams,
+  if (!AdminId) {
+    return res.status(400).json({
+      success: false,
+      message: "AdminId is required",
     });
-})
+  }
+
+  if (!mongoose.isValidObjectId(AdminId)) {
+    return res.status(400).json({
+      success: false,
+      message: "Invalid AdminId",
+    });
+  }
+
+  const [exams, total] = await Promise.all([
+    Exam.find({ Admin: AdminId }) // ✅ FIX HERE
+      .select(
+        "ExamName ExamCode Class Questions Duration createdAt Participants MarkPerQuestion"
+      )
+      .skip(skip)
+      .limit(limit)
+      .lean(),
+
+    Exam.countDocuments({ Admin: AdminId }), // ✅ FIX HERE
+  ]);
+
+  const totalPages = Math.ceil(total / limit);
+
+  return res.status(200).json({
+    success: true,
+    total,
+    page,
+    totalPages,
+    limit,
+    count: exams.length,
+    exams,
+  });
+});
+
 
 export const GetExamById = asyncHandler(async (req , res)=>{
     const {ExamId} = req.params
@@ -212,4 +259,4 @@ export const GetDashboardStats = asyncHandler(async (req , res) => {
     const examCount = await Exam.countDocuments({Admin : AdminId});
     const submitExamCount = await SubmitExam.countDocuments({Admin : AdminId})
     res.status(200).json({examCount , submitExamCount , admin})
-})    
+})
