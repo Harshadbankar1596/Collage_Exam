@@ -10,20 +10,17 @@ const ExamSchema = new mongoose.Schema({
     ExamCode: {
         type: String,
         require: true,
-        unique: true,
         index: true
     },
 
     Class: {
         type: String,
-        required: true
     },
 
     Admin: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "Admin",
         required: true,
-        index: true,
     },
 
     MarkPerQuestion : {
@@ -47,11 +44,6 @@ const ExamSchema = new mongoose.Schema({
         type : Number,
         default : 0
     }
-
-    // StartTime :{
-    //     type : Date,
-    // }
-
 }, { timestamps: true })
 
 

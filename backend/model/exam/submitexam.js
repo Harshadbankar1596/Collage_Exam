@@ -5,20 +5,17 @@ const SubmitExamSchema = new mongoose.Schema({
         type : mongoose.Schema.Types.ObjectId,
         required : true,
         ref : "User",
-        index : true
     },
     Exam : {
         type : mongoose.Schema.Types.ObjectId,
         required : true,
         ref : "Exam",
-        index : true
     },
 
     Admin : {
         type : mongoose.Schema.Types.ObjectId,
         required : true,
         ref : "Admin",
-        index : true
     },
 
     Answers : [

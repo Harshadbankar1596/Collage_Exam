@@ -64,3 +64,13 @@ export const SubmitExams = asyncHandler(async (req, res) => {
     res.status(201).json({ message: "Exam Submmited Succsess Full" })
 
 })
+
+export const GetAllExam = asyncHandler(async (req , res) => {
+    const Exams = await Exam.find().lean()
+
+    if(!Exam || Exam.length === 0){
+        return res.status(400).json({error : "Exam Not ound"})
+    }
+
+    res.status(200).json({message : "Sucsess" , Exams : Exams})
+}) 

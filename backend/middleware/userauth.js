@@ -6,7 +6,8 @@ import asyncHandler from "express-async-handler";
 
 const UserAuth = asyncHandler(async (req , res , next) => {
     const token = req.cookies.token
-
+    console.log("token => " , token);
+    
     if(!token){
         res.status(401).json({message : "Unauthorized"})
     }

@@ -12,6 +12,7 @@ import User from "./router/user/user.js";
 
 const app = express();
 const PORT = process.env.PORT || 2000;
+
 const limiter = ratelimit({
   windowMs: 5 * 60 * 1000,
   max: 10,

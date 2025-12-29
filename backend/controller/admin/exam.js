@@ -103,7 +103,6 @@ export const GetAllExams = asyncHandler(async (req, res) => {
     const [exams, total] = await Promise.all([
         Exam.find({ AdminId })
             .select("ExamName ExamCode Class Questions Duration createdAt Participants MarkPerQuestion")
-            .hint({ AdminId: 1 })
             .skip(skip)
             .limit(limit)
             .lean(),
