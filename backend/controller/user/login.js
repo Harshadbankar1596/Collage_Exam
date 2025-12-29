@@ -9,7 +9,7 @@ import validator from "validator";
 
 export const RegisterUser = asyncHandler(async (req, res) => {
   try {
-    const { Name, Email, Phone ,Password } = req.body;
+    const { Name, Email, Phone, Password } = req.body;
 
     if (!Name || !Email || !Phone || !Password) {
       return res.status(400).json({ message: "Please fill all fields" });
@@ -56,8 +56,8 @@ export const RegisterUser = asyncHandler(async (req, res) => {
 
     res.cookie("token", token, {
       httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
-      sameSite: process.env.NODE_ENV === "production" ? "None" : "Lax",
+      secure: true,
+      sameSite: "None",
       maxAge: 24 * 60 * 60 * 1000,
     });
 
@@ -76,7 +76,6 @@ export const RegisterUser = asyncHandler(async (req, res) => {
     res.status(500).json({ message: "Server error", error: error.message });
   }
 });
-
 
 export const UserLogin = asyncHandler(async (req, res) => {
   const { Email, Password } = req.body;
@@ -100,12 +99,12 @@ export const UserLogin = asyncHandler(async (req, res) => {
   const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
     expiresIn: "1d",
   });
-  res.cookie("token", token, {
-    httpOnly: true,
-    secure: true,
-    sameSite: "None",
-    maxAge: 24 * 60 * 60 * 1000,
-  });
+ res.cookie("token", token, {
+        httpOnly: true,
+        secure: true,
+        sameSite: "None",
+        maxAge: 24 * 60 * 60 * 1000,
+      });
 
   res.status(200).json({
     message: "Login successful",

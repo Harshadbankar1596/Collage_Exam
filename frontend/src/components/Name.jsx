@@ -4,10 +4,10 @@ import styled from 'styled-components';
 const Name = ({ size = 32 }) => { // default size 32px
   return (
     <StyledWrapper size={size}>
-      <button className="button" data-text="Awesome">
+      {/* <button className="button" data-text="Awesome">
         <span className="actual-text">&nbsp;ptimized&nbsp;</span>
         <span aria-hidden="true" className="hover-text">&nbsp;ptimized&nbsp;</span>
-      </button>
+      </button> */}
     </StyledWrapper>
   );
 };
