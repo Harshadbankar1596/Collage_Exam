@@ -9,8 +9,6 @@ const UserSchema = new mongoose.Schema({
     Email : {
         type : String,
         required : true,
-        unique : true,
-        index : true
     },
 
     Password : {
@@ -25,17 +23,15 @@ const UserSchema = new mongoose.Schema({
 
     RollNo : {
         type : String,
-        required : true,
         unique : true,
-        index : true
     },
 
     PRN : {
         type : String,
-        required : true,
         unique : true,
-        index : true
     }
 })
+
+UserSchema.index({Email : 1})
 
 export default mongoose.model("User" , UserSchema)

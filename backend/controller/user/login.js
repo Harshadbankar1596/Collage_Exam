@@ -9,9 +9,9 @@ import validator from "validator";
 
 export const RegisterUser = asyncHandler(async (req, res) => {
   try {
-    const { Name, Email, Phone, RollNo, PRN, Password } = req.body;
+    const { Name, Email, Phone ,Password } = req.body;
 
-    if (!Name || !Email || !Phone || !RollNo || !PRN || !Password) {
+    if (!Name || !Email || !Phone || !Password) {
       return res.status(400).json({ message: "Please fill all fields" });
     }
 
