@@ -1,50 +1,119 @@
-import mongoose from "mongoose"
+// import mongoose from "mongoose"
 
-const ExamSchema = new mongoose.Schema({
+// const ExamSchema = new mongoose.Schema({
 
+//     ExamName: {
+//         type: String,
+//         require: true
+//     },
+
+//     ExamCode: {
+//         type: String,
+//         require: true,
+//         index: true
+//     },
+
+//     Class: {
+//         type: String,
+//     },
+
+//     Admin: {
+//         type: mongoose.Schema.Types.ObjectId,
+//         ref: "Admin",
+//         required: true,
+//     },
+
+//     MarkPerQuestion : {
+//         type : Number,
+//         required : true
+//     },
+    
+//     Questions: [
+//         {
+//             Name: { type: String, required: true },
+//             Options:[],
+//             Answer: { type: String, require: true }
+//         }
+//     ],
+
+//     Duration: {
+//         type: Number
+//     },
+
+//     Participants : {
+//         type : Number,
+//         default : 0
+//     }
+// }, { timestamps: true })
+
+
+// export default mongoose.model("Exam", ExamSchema)
+
+
+import mongoose from "mongoose";
+
+const ExamSchema = new mongoose.Schema(
+  {
     ExamName: {
-        type: String,
-        require: true
+      type: String,
+      required: true,
     },
 
     ExamCode: {
-        type: String,
-        require: true,
-        index: true
+      type: String,
+      required: true,
+      index: true,
     },
 
     Class: {
-        type: String,
+      type: String,
     },
 
     Admin: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Admin",
-        required: true,
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Admin",
+      required: true,
     },
 
-    MarkPerQuestion : {
-        type : Number,
-        required : true
+    MarkPerQuestion: {
+      type: Number,
+      required: true,
     },
-    
+
     Questions: [
-        {
-            Name: { type: String, required: true },
-            Options:[],
-            Answer: { type: String, require: true }
-        }
+      {
+        QuestionType: {
+          type: String,
+          enum: ["MCQ", "TEXT"],
+          required: true,
+        },
+
+        Name: {
+          type: String,
+          required: true,
+        },
+
+        Options: {
+          type: [String],
+          default: [],
+        },
+
+        Answer: {
+          type: String,
+        },
+      },
     ],
 
     Duration: {
-        type: Number
+      type: Number,
     },
 
-    Participants : {
-        type : Number,
-        default : 0
-    }
-}, { timestamps: true })
+    Participants: {
+      type: Number,
+      default: 0,
+    },
+  },
+  { timestamps: true }
+);
 
-
-export default mongoose.model("Exam", ExamSchema)
+export default mongoose.model("Exam", ExamSchema);
