@@ -47,8 +47,6 @@ export const RegisterUser = asyncHandler(async (req, res) => {
       Name,
       Email,
       Phone,
-      RollNo,
-      PRN,
       Password: hash,
     });
 
@@ -70,8 +68,6 @@ export const RegisterUser = asyncHandler(async (req, res) => {
         Name: user.Name,
         Email: user.Email,
         Phone: user.Phone,
-        RollNo: user.RollNo,
-        PRN: user.PRN,
       },
       token,
     });
