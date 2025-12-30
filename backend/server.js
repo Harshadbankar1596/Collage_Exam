@@ -23,7 +23,7 @@ app.use(express.json());
 app.use(express.urlencoded({ limit: "20mb", extended: true }));
 app.use(cookieParser());
 
-const allowedOrigins = ["http://localhost:5173", "http://127.0.0.1:5173" , "assessment.techsuryaitsolution.com" , "https://techsurya-studify.onrender.com"];
+const allowedOrigins = ["http://localhost:5173", "http://127.0.0.1:5173" , "https://assessment.techsuryaitsolution.com" , "https://techsurya-studify.onrender.com"];
 
 app.use(
   cors({
