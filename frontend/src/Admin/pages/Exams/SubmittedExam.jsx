@@ -139,7 +139,7 @@ const StudentCard = ({ sub, questions, markPerQ }) => {
             {sub.UserId?.Name || "Unknown"}
           </p>
           <p className="text-sm text-gray-500">
-            Roll: {sub.UserId?.RollNo || "-"}
+            Phone: {sub.UserId?.Phone || "-"}
           </p>
         </div>
 
