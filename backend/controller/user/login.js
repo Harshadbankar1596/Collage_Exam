@@ -111,9 +111,8 @@ export const UserLogin = asyncHandler(async (req, res) => {
     user: {
       Name: user.Name,
       Email: user.Email,
-      RollNo: user.RollNo,
-      PRN: user.PRN,
       token: token,
+      id : user._id
     },
   });
 });
