@@ -7,22 +7,24 @@ const Students = () => {
 
   const filteredStudents = data?.students?.filter((std) => {
     const text = search.toLowerCase();
+
     return (
-      std.Name.toLowerCase().includes(text) ||
-      std.Email.toLowerCase().includes(text) ||
-      std.RollNo.toLowerCase().includes(text) ||
-      std.PRN.toLowerCase().includes(text) ||
-      std.Phone.toLowerCase().includes(text)
+      (std?.Name || "").toLowerCase().includes(text) ||
+      (std?.Email || "").toLowerCase().includes(text) ||
+      String(std?.RollNo || "").toLowerCase().includes(text) ||
+      String(std?.PRN || "").toLowerCase().includes(text) ||
+      String(std?.Phone || "").toLowerCase().includes(text)
     );
   });
 
   return (
     <div className="w-full min-h-screen flex flex-col items-center p-4">
-      {/* Search Bar */}
+      
+      {/* Search */}
       <div className="w-full max-w-4xl mb-6">
         <input
           type="text"
-          placeholder="Search students by name, email, phone, roll no, PRN..."
+          placeholder="Search by name, email, phone, roll no, PRN..."
           className="w-full p-3 border rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
           value={search}
           onChange={(e) => setSearch(e.target.value)}
@@ -37,8 +39,6 @@ const Students = () => {
               <th className="p-3 border">Name</th>
               <th className="p-3 border">Email</th>
               <th className="p-3 border">Phone</th>
-              <th className="p-3 border">Roll No</th>
-              <th className="p-3 border">PRN</th>
             </tr>
           </thead>
 
@@ -47,21 +47,19 @@ const Students = () => {
               filteredStudents.map((std) => (
                 <tr
                   key={std._id}
-                  className="hover:bg-gray-50 transition border-b"
+                  className="hover:bg-gray-50 transition"
                 >
                   <td className="p-3 border font-semibold text-gray-800">
                     {std.Name}
                   </td>
                   <td className="p-3 border">{std.Email}</td>
-                  <td className="p-3 border">{std.Phone}</td>
-                  <td className="p-3 border">{std.RollNo}</td>
-                  <td className="p-3 border">{std.PRN}</td>
+                  <td className="p-3 border">{std.Phone || "-"}</td>
                 </tr>
               ))
             ) : (
               <tr>
                 <td
-                  colSpan={5}
+                  colSpan={3}
                   className="p-4 text-center text-gray-500 font-medium"
                 >
                   No students found

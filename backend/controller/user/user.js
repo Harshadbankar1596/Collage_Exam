@@ -4,10 +4,40 @@ import asyncHandler from "express-async-handler";
 import User from "../../model/user/user.js";
 import SubmitExam from "../../model/exam/submitexam.js";
 
+// export const GetExam = asyncHandler(async (req, res) => {
+//   const { examId } = req.params;
+
+//   if (!examId) return res.status(400).json({ message: "examId is required" });
+
+//   const exam = await Exam.findOne({ ExamCode: examId }).populate(
+//     "Admin",
+//     "Name Email Role CollegeName"
+//   );
+
+//   if (!exam) {
+//     return res.status(404).json({ message: "Exam not found" });
+//   }
+
+//   const Questions = exam.Questions.map((q) => {
+//     return { Name: q.Name, Options: q.Options, _id: q._id };
+//   });
+
+//   res.json({
+//     ExamName: exam.ExamName,
+//     ExamCode: exam.ExamCode,
+//     Class: exam.Class,
+//     Duration: exam.Duration,
+//     Admin: exam.Admin,
+//     Questions: Questions,
+//   });
+// });
+
 export const GetExam = asyncHandler(async (req, res) => {
   const { examId } = req.params;
 
-  if (!examId) return res.status(400).json({ message: "examId is required" });
+  if (!examId) {
+    return res.status(400).json({ message: "examId is required" });
+  }
 
   const exam = await Exam.findOne({ ExamCode: examId }).populate(
     "Admin",
@@ -18,9 +48,17 @@ export const GetExam = asyncHandler(async (req, res) => {
     return res.status(404).json({ message: "Exam not found" });
   }
 
-  const Questions = exam.Questions.map((q) => {
-    return { Name: q.Name, Options: q.Options, _id: q._id };
-  });
+  const shuffleArray = (array) => {
+    return array.sort(() => Math.random() - 0.5);
+  };
+
+  const Questions = shuffleArray(
+    exam.Questions.map((q) => ({
+      Name: q.Name,
+      Options: q.Options,
+      _id: q._id,
+    }))
+  );
 
   res.json({
     ExamName: exam.ExamName,
@@ -28,7 +66,7 @@ export const GetExam = asyncHandler(async (req, res) => {
     Class: exam.Class,
     Duration: exam.Duration,
     Admin: exam.Admin,
-    Questions: Questions,
+    Questions,
   });
 });
 
