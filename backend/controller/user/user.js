@@ -205,3 +205,7 @@ export const GetAllExam = asyncHandler(async (req, res) => {
   });
 });
 
+const shuffleArray = (arr = []) => {
+  return arr.sort(() => Math.random() - 0.5);
+};
+
