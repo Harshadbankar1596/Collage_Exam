@@ -181,13 +181,27 @@ export const SubmitExams = asyncHandler(async (req, res) => {
 
   res.status(201).json({ message: "Exam Submitted Successfully" });
 });
-
 export const GetAllExam = asyncHandler(async (req, res) => {
-  const Exams = await Exam.find().lean();
+  const exams = await Exam.find().lean();
 
-  if (!Exam || Exam.length === 0) {
-    return res.status(400).json({ error: "Exam Not ound" });
+  if (!exams || exams.length === 0) {
+    return res.status(400).json({ error: "Exam Not Found" });
   }
 
-  res.status(200).json({ message: "Sucsess", Exams: Exams });
+  const randomizedExams = exams.map((exam) => ({
+    ...exam,
+    Questions: shuffleArray(
+      (exam.Questions || []).map((q) => ({
+        ...q,
+        // ❌ Answer mat bhejo agar exam live hai (recommended)
+        Answer: undefined,
+      }))
+    ),
+  }));
+
+  res.status(200).json({
+    message: "Success",
+    Exams: randomizedExams,
+  });
 });
+
