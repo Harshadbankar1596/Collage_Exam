@@ -23,11 +23,8 @@ export const RegisterUser = asyncHandler(async (req, res) => {
 
     if (
       !validator.isStrongPassword(Password, {
-        minLength: 8,
-        minLowercase: 1,
-        minUppercase: 1,
+        minLength: 6,
         minNumbers: 1,
-        minSymbols: 1,
       })
     ) {
       return res.status(400).json({
